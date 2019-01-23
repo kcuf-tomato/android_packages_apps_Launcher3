@@ -32,6 +32,7 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -60,6 +61,7 @@ import com.android.launcher3.config.FeatureFlags;
 import com.android.launcher3.graphics.GridOptionsProvider;
 import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 import com.android.launcher3.util.SecureSettingsObserver;
+import com.android.launcher3.security.hidelock.HideLockAppsActivity;
 
 import com.aosp.launcher.AospLauncherCallbacks;
 import com.aosp.launcher.AospUtils;
@@ -89,6 +91,7 @@ public class SettingsActivity extends Activity
     public static final String GRID_OPTIONS_PREFERENCE_KEY = "pref_grid_options";
 
     public static final String MINUS_ONE_KEY = "pref_enable_minus_one";
+    public static final String KEY_HIDELOCK_APPS = "pref_hidelock_apps";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -290,9 +293,16 @@ public class SettingsActivity extends Activity
                             AospLauncherCallbacks.SEARCH_PACKAGE);
                 case GRID_OPTIONS_PREFERENCE_KEY:
                     return true;
-            }
 
-            return true;
+                case KEY_HIDELOCK_APPS:
+                    preference.setOnPreferenceClickListener(p -> {
+                        Intent intent = new Intent(getActivity(), HideLockAppsActivity.class);
+                        startActivity(intent);
+                        return true;
+                    });
+                    return true;
+           }
+                    return true;
         }
 
         @Override
