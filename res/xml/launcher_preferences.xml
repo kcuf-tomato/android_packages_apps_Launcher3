@@ -117,4 +117,63 @@
         android:persistent="true" />
      </PreferenceCategory>
 
+    <Preference
+        android:key="icons"
+        android:title="@string/icons_category_title"
+        android:summary="@string/icons_category_summary"
+        android:icon="@drawable/icons"
+        android:layout="@layout/settings_layout">
+        <intent
+            android:action="android.settings.APPLICATION_DETAILS_SETTINGS"
+            android:targetPackage="com.android.launcher3"
+            android:targetClass="com.android.launcher3.settings.SettingsIcons" />
+    </Preference>
+
+    <Preference
+        android:key="home_screen"
+        android:title="@string/home_category_title"
+        android:summary="@string/home_category_summary"
+        android:icon="@drawable/homescreen"
+        android:layout="@layout/settings_layout">
+    <intent
+            android:action="android.settings.APPLICATION_DETAILS_SETTINGS"
+            android:targetPackage="com.android.launcher3"
+            android:targetClass="com.android.launcher3.settings.SettingsHomescreen" />
+    </Preference>
+
+    <Preference
+        android:key="app_drawer"
+        android:title="@string/app_drawer_category_title"
+        android:summary="@string/app_drawer_category_summary"
+        android:icon="@drawable/appdrawer"
+        android:layout="@layout/settings_layout">
+    <intent
+            android:action="android.settings.APPLICATION_DETAILS_SETTINGS"
+            android:targetPackage="com.android.launcher3"
+            android:targetClass="com.android.launcher3.settings.SettingsAppDrawer" />
+    </Preference>
+
+    <Preference
+        android:key="grid"
+        android:title="@string/grid_category_title"
+        android:summary="@string/grid_category_summary"
+        android:icon="@drawable/appdrawer"
+        android:layout="@layout/settings_layout">
+    <intent
+            android:action="android.settings.APPLICATION_DETAILS_SETTINGS"
+            android:targetPackage="com.android.launcher3"
+            android:targetClass="com.android.launcher3.settings.SettingsAppDrawer" />
+    </Preference>
+
+    <Preference
+        android:key="miscellaneous"
+        android:title="@string/misc_category_title"
+        android:summary="@string/misc_category_summary"
+        android:icon="@drawable/misc_preference"
+        android:layout="@layout/settings_layout">
+    <intent
+            android:action="android.settings.APPLICATION_DETAILS_SETTINGS"
+            android:targetPackage="com.android.launcher3"
+            android:targetClass="com.android.launcher3.settings.SettingsMisc" />
+    </Preference>
 </androidx.preference.PreferenceScreen>
