@@ -300,8 +300,11 @@ public class SettingsActivity extends Activity
                     preference.setSummary(Utilities.isDeviceSecured(getActivity()) ?
                         R.string.hidelock_apps_manager_summary : R.string.hide_apps_manager_summary);
                     preference.setOnPreferenceClickListener(p -> {
-                        Intent intent = new Intent(getActivity(), HideLockAppsActivity.class);
-                        startActivity(intent);
+                        Utilities.showAuthScreen(getActivity(),
+                                getString(R.string.hidelock_apps_manager_name), () -> {
+                            Intent intent = new Intent(getActivity(), HideLockAppsActivity.class);
+                            startActivity(intent);
+                        });
                         return true;
                     });
                     return true;
