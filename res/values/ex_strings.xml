@@ -78,4 +78,8 @@
     <string name="app_drawer_category_summary">Customize your app drawer</string>
     <string name="misc_category_title">Miscellaneous</string>
     <string name="misc_category_summary">Other options</string>
+
+    <!-- Preference default value -->
+    <string name="pref_value_default" translatable="false">Default</string>
+
 </resources>
