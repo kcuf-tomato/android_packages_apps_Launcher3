@@ -341,7 +341,10 @@
     <string name="remote_action_failed">Failed: <xliff:g id="what" example="Pause">%1$s</xliff:g></string>
 
     <!-- Hide and Lock apps -->
+    <string name="hide_apps_manager_name">Hidden apps</string>
     <string name="hidelock_apps_manager_name">Hidden &amp; Protected apps</string>
+    <string name="hide_apps_manager_summary">Hide apps from the app drawer</string>
+    <string name="hidelock_apps_manager_summary">Hide and protect apps from the app drawer</string>
     <string name="hidelock_apps_auth_manager">Unlock to manage the hidden and protected apps</string>
     <string name="hidelock_apps_auth_open_app">Authenticate to open %1$s</string>
     <string name="hidelock_apps_loading">Loading\u2026</string>
