@@ -1,5 +1,7 @@
 package com.aosp.launcher.icons.calendar;
 
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +30,7 @@ public class DateChangeReceiver extends BroadcastReceiver {
         filter.addAction(Intent.ACTION_TIME_CHANGED);
         filter.addAction(Intent.ACTION_TIMEZONE_CHANGED);
 
-        Handler handler = new Handler(LauncherModel.getWorkerLooper());
+        Handler handler = MODEL_EXECUTOR.getHandler();
         context.registerReceiver(this, filter, null, handler);
     }
 

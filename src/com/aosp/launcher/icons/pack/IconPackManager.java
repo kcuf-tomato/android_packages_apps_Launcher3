@@ -1,5 +1,7 @@
 package com.aosp.launcher.icons.pack;
 
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -55,7 +57,7 @@ public class IconPackManager extends BroadcastReceiver {
 
     private final Context mContext;
     private final Map<String, IconPack> mProviders = new HashMap<>();
-    private final Handler mHandler = new Handler(LauncherModel.getWorkerLooper());
+    private final Handler mHandler = MODEL_EXECUTOR.getHandler();
 
     private IconPackManager(Context context) {
         mContext = context;

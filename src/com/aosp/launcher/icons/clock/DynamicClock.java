@@ -1,6 +1,7 @@
 package com.aosp.launcher.icons.clock;
 
 import static com.android.launcher3.util.Executors.MAIN_EXECUTOR;
+import static com.android.launcher3.util.Executors.MODEL_EXECUTOR;
 
 import android.annotation.TargetApi;
 import android.content.BroadcastReceiver;
@@ -45,7 +46,7 @@ public class DynamicClock extends BroadcastReceiver {
         mUpdaters = Collections.newSetFromMap(new WeakHashMap<>());
         mLayers = new ClockLayers();
         mContext = context;
-        final Handler handler = new Handler(LauncherModel.getWorkerLooper());
+        final Handler handler = MODEL_EXECUTOR.getHandler();
 
         IntentFilter filter = new IntentFilter();
         filter.addDataScheme("package");
