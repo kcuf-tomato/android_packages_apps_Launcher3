@@ -33,7 +33,7 @@ import android.os.ParcelFileDescriptor.AutoCloseOutputStream;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.android.launcher3.AllAppsList;
+import com.android.launcher3.model.AllAppsList;
 import com.android.launcher3.AppFilter;
 import com.android.launcher3.AppInfo;
 import com.android.launcher3.LauncherAppState;
