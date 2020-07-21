@@ -21,10 +21,6 @@ import com.android.launcher3.R;
 import com.android.launcher3.util.ComponentKey;
 import com.android.launcher3.widget.WidgetsBottomSheet;
 
-import com.aosp.launcher.settings.IconPackPrefSetter;
-import com.aosp.launcher.settings.ReloadingListPreference;
-import com.aosp.launcher.util.AppReloader;
-
 public class InfoBottomSheet extends WidgetsBottomSheet {
     private final FragmentManager mFragmentManager;
     private View.OnClickListener mOnAppInfoClick;
@@ -115,11 +111,9 @@ public class InfoBottomSheet extends WidgetsBottomSheet {
 
             MetadataExtractor extractor = new MetadataExtractor(mContext, mComponent);
 
-            ReloadingListPreference icons = (ReloadingListPreference) findPreference(KEY_ICON_PACK);
-            icons.setOnReloadListener(new IconPackPrefSetter(mContext, mComponent));
-            icons.setOnPreferenceChangeListener(this);
-            icons.setValue(IconDatabase.getByComponent(mContext, mKey));
-
+            Preference iconPack = findPreference(KEY_ICON_PACK);
+            iconPack.setOnPreferenceChangeListener(this);
+            iconPack.setSummary(R.string.app_info_icon_pack_none);
             findPreference(KEY_SOURCE).setSummary(extractor.getSource());
             findPreference(KEY_LAST_UPDATE).setSummary(extractor.getLastUpdate());
             findPreference(KEY_VERSION).setSummary(mContext.getString(
@@ -131,18 +125,17 @@ public class InfoBottomSheet extends WidgetsBottomSheet {
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
-            if (newValue.equals(IconDatabase.getGlobal(mContext))) {
-                IconDatabase.resetForComponent(mContext, mKey);
-            } else {
-                IconDatabase.setForComponent(mContext, mKey, (String) newValue);
+            if (KEY_ICON_PACK.equals(preference.getKey())) {
+                // Reload in launcher.
             }
-            AppReloader.get(mContext).reload(mKey);
-            return true;
+            return false;
         }
 
         @Override
         public boolean onPreferenceClick(Preference preference) {
-            mOnMoreClick.onClick(getView());
+            if (KEY_MORE.equals(preference.getKey())) {
+                mOnMoreClick.onClick(getView());
+            }
             return false;
         }
     }
