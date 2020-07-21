@@ -178,7 +178,7 @@
         The settings activity. To extend point settings_fragment_name to appropriate fragment class
         -->
         <activity
-            android:name="com.aosp.launcher.AospSettings"
+            android:name="com.android.launcher3.settings.SettingsActivity"
             android:label="@string/settings_title"
             android:theme="@style/HomeSettingsTheme"
             android:autoRemoveFromRecents="true">
@@ -190,7 +190,7 @@
 
         <!-- Icons -->
         <activity
-            android:name="com.android.launcher3.settings.SettingsIcons"
+            android:name="com.aosp.launcher.AospIconSettings"
             android:label="@string/icons_category_title"
             android:theme="@android:style/Theme.DeviceDefault.Settings"
             android:autoRemoveFromRecents="true"
