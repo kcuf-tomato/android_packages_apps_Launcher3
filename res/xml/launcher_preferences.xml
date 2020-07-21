@@ -143,7 +143,7 @@
         <intent
             android:action="android.settings.APPLICATION_DETAILS_SETTINGS"
             android:targetPackage="com.android.launcher3"
-            android:targetClass="com.android.launcher3.settings.SettingsIcons" />
+            android:targetClass="com.aosp.launcher.AospIconSettings" />
     </Preference>
 
     <Preference
