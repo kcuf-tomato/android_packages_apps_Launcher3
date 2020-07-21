@@ -57,8 +57,6 @@
         android:defaultValue="true"
         android:persistent="true"/>
 
-    </PreferenceCategory>
-
     <SwitchPreference
         android:key="pref_legacy_icon_mask"
         android:title="@string/legacy_icon_mask_title"
