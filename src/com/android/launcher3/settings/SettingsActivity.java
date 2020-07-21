@@ -66,24 +66,11 @@ public class SettingsActivity extends Activity
         implements OnPreferenceStartFragmentCallback, OnPreferenceStartScreenCallback,
         SharedPreferences.OnSharedPreferenceChangeListener{
 
-    private static final String DEVELOPER_OPTIONS_KEY = "pref_developer_options";
-    private static final String FLAGS_PREFERENCE_KEY = "flag_toggler";
-    private static final String GRID_ROWS_KEY = "pref_grid_rows";
-    private static final String GRID_COLUMNS_KEY = "pref_grid_columns";
-    private static final String HOTSEAT_ICONS_KEY = "pref_hotseat_icons";
-
-    private static final String NOTIFICATION_DOTS_PREFERENCE_KEY = "pref_icon_badging";
     /** Hidden field Settings.Secure.ENABLED_NOTIFICATION_LISTENERS */
-    private static final String NOTIFICATION_ENABLED_LISTENERS = "enabled_notification_listeners";
-
     public static final String EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key";
     public static final String EXTRA_SHOW_FRAGMENT_ARGS = ":settings:show_fragment_args";
     private static final int DELAY_HIGHLIGHT_DURATION_MILLIS = 600;
     public static final String SAVE_HIGHLIGHTED_KEY = "android:preference_highlighted";
-
-    public static final String GRID_OPTIONS_PREFERENCE_KEY = "pref_grid_options";
-
-    public static final String MINUS_ONE_KEY = "pref_enable_minus_one";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,26 +94,6 @@ public class SettingsActivity extends Activity
     }
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (GRID_OPTIONS_PREFERENCE_KEY.equals(key)) {
-
-            final ComponentName cn = new ComponentName(getApplicationContext(),
-                    GridOptionsProvider.class);
-            Context c = getApplicationContext();
-            int oldValue = c.getPackageManager().getComponentEnabledSetting(cn);
-            int newValue;
-            if (Utilities.getPrefs(c).getBoolean(GRID_OPTIONS_PREFERENCE_KEY, true)) {
-                newValue = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-            } else {
-                newValue = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
-            }
-
-            if (oldValue != newValue) {
-                c.getPackageManager().setComponentEnabledSetting(cn, newValue,
-                        PackageManager.DONT_KILL_APP);
-            }
-        } else if (Utilities.SHOW_WORKSPACE_GRADIENT.equals(key) || Utilities.SHOW_HOTSEAT_GRADIENT.equals(key)) {
-            LauncherAppState.getInstanceNoCreate().setNeedsRestart();
-        }
     }
 
     private boolean startFragment(String fragment, Bundle args, String key) {
@@ -192,38 +159,6 @@ public class SettingsActivity extends Activity
                 }
             }
 
-            final ListPreference gridColumns = (ListPreference) findPreference(Utilities.GRID_COLUMNS);
-            gridColumns.setSummary(gridColumns.getEntry());
-            gridColumns.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    int index = gridColumns.findIndexOfValue((String) newValue);
-                    gridColumns.setSummary(gridColumns.getEntries()[index]);
-                    Utilities.restart(getActivity());
-                    return true;
-                }
-            });
-
-            final ListPreference gridRows = (ListPreference) findPreference(Utilities.GRID_ROWS);
-            gridRows.setSummary(gridRows.getEntry());
-            gridRows.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    int index = gridRows.findIndexOfValue((String) newValue);
-                    gridRows.setSummary(gridRows.getEntries()[index]);
-                    Utilities.restart(getActivity());
-                    return true;
-                }
-            });
-
-            final ListPreference hotseatColumns = (ListPreference) findPreference(Utilities.HOTSEAT_ICONS);
-            hotseatColumns.setSummary(hotseatColumns.getEntry());
-            hotseatColumns.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    int index = hotseatColumns.findIndexOfValue((String) newValue);
-                    hotseatColumns.setSummary(hotseatColumns.getEntries()[index]);
-                    Utilities.restart(getActivity());
-                    return true;
-                }
-            });
         }
 
         @Override
@@ -241,8 +176,9 @@ public class SettingsActivity extends Activity
          * will remove that preference from the list.
          */
         protected boolean initPreference(Preference preference) {
-
-            return true;
+            //switch (preference.getKey()) {
+            //}
+	     return true;
         }
 
         @Override
@@ -284,11 +220,6 @@ public class SettingsActivity extends Activity
 
         @Override
         public void onDestroy() {
-            LauncherAppState.getInstanceNoCreate().checkIfRestartNeeded();
-            if (mNotificationDotsObserver != null) {
-                mNotificationDotsObserver.unregister();
-                mNotificationDotsObserver = null;
-            }
             super.onDestroy();
         }
     }

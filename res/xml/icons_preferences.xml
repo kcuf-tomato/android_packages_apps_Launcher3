@@ -21,4 +21,11 @@
         </intent>
     </com.android.launcher3.settings.NotificationDotsPreference>
 
+    <SwitchPreference
+        android:key="pref_legacy_icon_mask"
+        android:title="@string/legacy_icon_mask_title"
+        android:summary="@string/legacy_icon_mask_summary"
+        android:defaultValue="false"
+        android:persistent="true"/>
+
 </androidx.preference.PreferenceScreen> 
