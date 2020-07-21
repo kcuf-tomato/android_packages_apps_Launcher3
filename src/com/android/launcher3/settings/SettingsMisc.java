@@ -16,9 +16,6 @@
 
 package com.android.launcher3.settings;
 
-import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY;
-import static com.android.launcher3.states.RotationHelper.getAllowRotationDefaultValue;
-
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -150,16 +147,6 @@ public class SettingsMisc extends Activity
          */
         protected boolean initPreference(Preference preference) {
             switch (preference.getKey()) {
-
-                case ALLOW_ROTATION_PREFERENCE_KEY:
-                    if (getResources().getBoolean(R.bool.allow_rotation)) {
-                        // Launcher supports rotation by default. No need to show this setting.
-                        return false;
-                    }
-                    // Initialize the UI once
-                    preference.setDefaultValue(getAllowRotationDefaultValue());
-                    return true;
-
                 case FLAGS_PREFERENCE_KEY:
                     // Only show flag toggler UI if this build variant implements that.
                     return FeatureFlags.showFlagTogglerUi(getContext());

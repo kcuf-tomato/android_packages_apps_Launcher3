@@ -16,6 +16,9 @@
 
 package com.android.launcher3.settings;
 
+import static com.android.launcher3.states.RotationHelper.ALLOW_ROTATION_PREFERENCE_KEY;
+import static com.android.launcher3.states.RotationHelper.getAllowRotationDefaultValue;
+
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
@@ -43,6 +46,8 @@ import androidx.preference.PreferenceGroup.PreferencePositionCallback;
 import androidx.preference.PreferenceScreen;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.aosp.launcher.AospLauncherCallbacks;
+import com.aosp.launcher.AospUtils;
 /**
  * Settings activity for Launcher. Currently implements the following setting: Allow rotation
  */
@@ -55,7 +60,7 @@ public class SettingsHomescreen extends Activity
     private static final int DELAY_HIGHLIGHT_DURATION_MILLIS = 600;
     public static final String SAVE_HIGHLIGHTED_KEY = "android:preference_highlighted";
 
-    public static final String GRID_OPTIONS_PREFERENCE_KEY = "pref_grid_options";
+    public static final String MINUS_ONE_KEY = "pref_enable_minus_one";
 
     @Override
     protected void onCreate(final Bundle bundle) {
@@ -68,24 +73,6 @@ public class SettingsHomescreen extends Activity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if (GRID_OPTIONS_PREFERENCE_KEY.equals(key)) {
-
-            final ComponentName cn = new ComponentName(getApplicationContext(),
-                    GridOptionsProvider.class);
-            Context c = getApplicationContext();
-            int oldValue = c.getPackageManager().getComponentEnabledSetting(cn);
-            int newValue;
-            if (Utilities.getPrefs(c).getBoolean(GRID_OPTIONS_PREFERENCE_KEY, false)) {
-                newValue = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
-            } else {
-                newValue = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
-            }
-
-            if (oldValue != newValue) {
-                c.getPackageManager().setComponentEnabledSetting(cn, newValue,
-                        PackageManager.DONT_KILL_APP);
-            }
-        }
     }
 
     private boolean startFragment(String fragment, Bundle args, String key) {
@@ -164,10 +151,17 @@ public class SettingsHomescreen extends Activity
          */
         protected boolean initPreference(Preference preference) {
             switch (preference.getKey()) {
-                case GRID_OPTIONS_PREFERENCE_KEY:
-                    return Utilities.isDevelopersOptionsEnabled(getContext()) &&
-                            Utilities.IS_DEBUG_DEVICE &&
-                            Utilities.existsStyleWallpapers(getContext());
+                case MINUS_ONE_KEY:
+                    return AospUtils.hasPackageInstalled(getActivity(),
+                            AospLauncherCallbacks.SEARCH_PACKAGE);
+                case ALLOW_ROTATION_PREFERENCE_KEY:
+                    if (getResources().getBoolean(R.bool.allow_rotation)) {
+                        // Launcher supports rotation by default. No need to show this setting.
+                        return false;
+                    }
+                    // Initialize the UI once
+                    preference.setDefaultValue(getAllowRotationDefaultValue());
+                    return true;
             }
             return true;
         }

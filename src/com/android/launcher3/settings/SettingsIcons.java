@@ -16,6 +16,8 @@
 
 package com.android.launcher3.settings;
 
+import static com.android.launcher3.SessionCommitReceiver.ADD_ICON_PREFERENCE_KEY;
+
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;

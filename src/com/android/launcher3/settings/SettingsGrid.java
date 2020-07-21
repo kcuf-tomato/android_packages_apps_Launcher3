@@ -36,7 +36,9 @@ import com.android.launcher3.uioverrides.plugins.PluginManagerWrapper;
 import com.android.launcher3.util.SecureSettingsObserver;
 
 import androidx.preference.Preference;
+import androidx.preference.ListPreference;
 import androidx.preference.PreferenceFragment;
+import androidx.preference.Preference.OnPreferenceChangeListener;
 import androidx.preference.PreferenceFragment.OnPreferenceStartFragmentCallback;
 import androidx.preference.PreferenceFragment.OnPreferenceStartScreenCallback;
 import androidx.preference.PreferenceGroup.PreferencePositionCallback;
@@ -55,6 +57,12 @@ public class SettingsGrid extends Activity
     private static final int DELAY_HIGHLIGHT_DURATION_MILLIS = 600;
     public static final String SAVE_HIGHLIGHTED_KEY = "android:preference_highlighted";
 
+    private static final String GRID_ROWS_KEY = "pref_grid_rows";
+    private static final String GRID_COLUMNS_KEY = "pref_grid_columns";
+    private static final String HOTSEAT_ICONS_KEY = "pref_hotseat_icons";
+
+    public static final String GRID_OPTIONS_PREFERENCE_KEY = "pref_grid_options";
+
     @Override
     protected void onCreate(final Bundle bundle) {
         super.onCreate(bundle);
@@ -66,6 +74,24 @@ public class SettingsGrid extends Activity
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (GRID_OPTIONS_PREFERENCE_KEY.equals(key)) {
+
+            final ComponentName cn = new ComponentName(getApplicationContext(),
+                    GridOptionsProvider.class);
+            Context c = getApplicationContext();
+            int oldValue = c.getPackageManager().getComponentEnabledSetting(cn);
+            int newValue;
+            if (Utilities.getPrefs(c).getBoolean(GRID_OPTIONS_PREFERENCE_KEY, false)) {
+                newValue = PackageManager.COMPONENT_ENABLED_STATE_ENABLED;
+            } else {
+                newValue = PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+            }
+
+            if (oldValue != newValue) {
+                c.getPackageManager().setComponentEnabledSetting(cn, newValue,
+                        PackageManager.DONT_KILL_APP);
+            }
+        }
     }
 
     private boolean startFragment(String fragment, Bundle args, String key) {
@@ -126,6 +152,39 @@ public class SettingsGrid extends Activity
                     screen.removePreference(preference);
                 }
             }
+
+            final ListPreference gridColumns = (ListPreference) findPreference(Utilities.GRID_COLUMNS);
+            gridColumns.setSummary(gridColumns.getEntry());
+            gridColumns.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    int index = gridColumns.findIndexOfValue((String) newValue);
+                    gridColumns.setSummary(gridColumns.getEntries()[index]);
+                    Utilities.restart(getActivity());
+                    return true;
+                }
+            });
+
+            final ListPreference gridRows = (ListPreference) findPreference(Utilities.GRID_ROWS);
+            gridRows.setSummary(gridRows.getEntry());
+            gridRows.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    int index = gridRows.findIndexOfValue((String) newValue);
+                    gridRows.setSummary(gridRows.getEntries()[index]);
+                    Utilities.restart(getActivity());
+                    return true;
+                }
+            });
+
+            final ListPreference hotseatColumns = (ListPreference) findPreference(Utilities.HOTSEAT_ICONS);
+            hotseatColumns.setSummary(hotseatColumns.getEntry());
+            hotseatColumns.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    int index = hotseatColumns.findIndexOfValue((String) newValue);
+                    hotseatColumns.setSummary(hotseatColumns.getEntries()[index]);
+                    Utilities.restart(getActivity());
+                    return true;
+                }
+            });
         }
 
         @Override
@@ -143,8 +202,12 @@ public class SettingsGrid extends Activity
          * will remove that preference from the list.
          */
         protected boolean initPreference(Preference preference) {
-            //switch (preference.getKey()) {
-            //}
+            switch (preference.getKey()) {
+                case GRID_OPTIONS_PREFERENCE_KEY:
+                    return Utilities.isDevelopersOptionsEnabled(getContext()) &&
+                            Utilities.IS_DEBUG_DEVICE &&
+                            Utilities.existsStyleWallpapers(getContext());
+            }
             return true;
         }
 
